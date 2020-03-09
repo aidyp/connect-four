@@ -2,9 +2,27 @@
 def check_win_by_diag(board, piece):
     '''
     This checks for a diagonal win
+    Return 1 if there is a win
+    Return 0 if not
     '''
+    # Work with Ronan to complete this section.
+    # Current idea is to store a list of diagonal "roots", and check them in turn
+    win_diags_ur = [(5,0)]
+    win_diags_ul = [(5,6)]
 
-    # No need to dynamically generate the diagonals #
+    for coords in win_diags_ur:
+        row, col = coords[0],coords[1]
+
+        #Diagonal checking loop
+        consec = 0
+        while row >= 0 and col <= 6:
+            if board[row][col] == piece:
+                consec += 1:
+            else:
+                consec = 0
+            row -= 1
+            col += 1
+
 
 def initialise_board():
     board = [['*' for i in range(7)] for j in range(6)]
@@ -15,14 +33,14 @@ def print_board(board):
     Pretty print the board
     '''
     index = ['0', '1', '2', '3', '4', '5', '6']
-    l = "  " + "   ".join(index) + " "
+    l = "    " + "   ".join(index) + " "
     print(l)
 
     for i in range(len(board)):
         if i == (len(board) - 1):
-            l = "|_" + "_|_".join(board[i]).replace("*", " ") + "_|"
+            l = str(i) + " |_" + "_|_".join(board[i]).replace("*", " ") + "_|"
         else:
-            l = "| " + " | ".join(board[i]).replace("*", " ") + " |"
+            l = str(i) + " | " + " | ".join(board[i]).replace("*", " ") + " |"
         print(l)
 
 def place_piece(board, piece, index):
@@ -34,20 +52,21 @@ def place_piece(board, piece, index):
         #Illegal move
         return 0
 
-    col = 0
-    while board[col][index] == '*':
-        col += 1
-        if col == len(board):
+    row = 0
+    while board[row][index] == '*':
+        row += 1
+        if row == len(board):
             break
-    board[col-1][index] = piece
+    board[row-1][index] = piece
     return 1
 
 def check_row_win(board, piece):
     # Win horizontally
     for row in board:
         for slot in row:
+            consec = 0
             if slot == piece:
-                consec += 1
+                consec += 1 #This is the same as consec = consec + 1
                 if consec == 4:
                     return 1
             else:
@@ -68,6 +87,42 @@ def check_win(board, piece):
 
     # Diagonal win is a bit more involved. Suspect easiest is just to hardcode the diagonals and check then
     # Stack overflow says change the co-ordinate scheme
+
+
+# Re-architect to form a class
+class connect_four:
+    '''
+    This implements the basic connect4 board and equips it with the ability to place pieces
+    and evaluate winners
+    '''
+    def __init___(self):
+        self.state = initialise_board()
+        self.players = ['X'. 'O']
+        self.current_turn = 0
+
+    def print_state(self):
+        '''
+        Prints the current state of the board, including who's turn it is
+        '''
+        print("It's currently " + str(self.players[self.current_turn]) + "to play")
+        print_board()
+
+    def get_state(self):
+        '''
+        Returns the state of the board for inspection
+        '''
+        full_state = {'board':self.state, 'player': self.players[self.current_turn]}
+        return full_state
+
+    def play_turn(self, col):
+        '''
+        Places a piece on the board in the selected column
+        Returns -1 for illegal moves, returns 0 otherwise
+        '''
+
+    def change_player(self):
+        self.current_turn ^= self.current_turn
+
 
 
 def test_vertical(game_board):
