@@ -43,8 +43,8 @@ def check_win_by_diag(board, piece):
 def check_row_win(board, piece):
     # Win horizontally
     for row in board:
+        consec = 0
         for slot in row:
-            consec = 0
             if slot == piece:
                 consec += 1 #This is the same as consec = consec + 1
                 if consec == 4:
