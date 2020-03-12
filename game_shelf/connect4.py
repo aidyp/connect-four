@@ -92,6 +92,8 @@ class connect_four_board:
         Places a piece on the board in the selected column for the current player
         Returns -1 for illegal moves, returns 0 otherwise
         '''
+        
+        col = int(col)
         if self.board_state[0][col] != '*':
             # Illegal move
             return -1
@@ -129,3 +131,19 @@ class connect_four_board:
             return 1
 
         return 0
+
+
+def play():
+    new_game = connect_four_board()
+    while True:
+        new_game.print_state()
+        move = input("Make your move: ")
+        new_game.play_turn(move)
+        if new_game.check_win() == 1:
+            print("Player " + new_game.players[new_game.current_turn] + " Has won!")
+            break
+        new_game.change_player()
+
+
+if __name__ == '__main__':
+	play()

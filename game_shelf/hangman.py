@@ -15,101 +15,66 @@ def init_count(word):
 	'''
 	return 5
 
-def check_win(state):
-	'''
-	Check if someone has won the game
-	'''
-	for elem in state:
-		if elem == '*':
-			return 0
-	return 1
+def initialise_state(word):
+		state = ['*'] * len(word)
+		return state
 
-def start_game(word, state):
-	print("The word is " + str(len(word)) + " letters long")
-	print_state(state)	
-
-def print_state(state):
-	'''
-	Prints the current state of hangman
-	'''
-	to_print = ""
-	
-	for elem in state:
-		if elem == '*':
-			to_print = to_print + "_ "
-		else:
-			to_print = to_print + elem + " "
-	
-	print(to_print)
-	
-
-def update_state(state, letter, indices):
-	'''
-	Changes the state to the include the letter
-	'''
-	for i in range(0, len(indices)):
-		insert_point = indices[i]
-		state[insert_point] = letter
-		
-
-
-def guess_letter(word, letter_guess):
-	'''
-	Checks to see if the guessed letter is in the word
-	'''
-	
-	indices = []
-	for i in range(0, len(word)):
-		if word[i] == letter_guess:
-			indices.append(i)
-	
-	return indices
-
-def guess(word, state):
-	'''
-	Takes a guess, and returns if it's successful
-	'''
-	guess = input("Guess a letter: ")
-	guessed_letters = guess_letter(word, guess)
-	
-	if len(guessed_letters) > 0:
-		update_state(state, guess, guessed_letters)
-		return 1
-	
-	return 0
-	
-
-
-def play():
-	'''
-	Plays hangman
-	'''
-	
-	word = pick_word()
-	max_guesses = init_count(word)
-	state = initialise_state(word)
-	count = 0
-	start_game(word, state)
-	while count < max_guesses:
-		if guess(word, state) == 0:
-			count += 1
-		print_state(state)
-		if check_win(state) == 1:
-			print("You won!")
-			return
-	print("You lose!")
-
-play()
 
 
 class hangman:
 	
 	def __init__(self):
 		self.word = pick_word()
-		self.state = initialise_state()	
+		self.state = initialise_state(self.word)
 	
-	def initialise_state(self):
-		self.state = ['*'] * len(word)
+	def get_state(self):
+		return self.state
+		
+	def update_state(self, letter, indices):
+		'''
+		Changes the state to the include the letter
+		'''
+		for i in range(0, len(indices)):
+			insert_point = indices[i]
+			self.state[insert_point] = letter
+	
+	def guess_letter(self, letter_guess):
+		'''
+		Checks to see if the guessed letter is in the word
+		'''
+		
+		indices = []
+		for i in range(0, len(self.word)):
+			if self.word[i] == letter_guess:
+				indices.append(i)
+		
+		return indices
+	
+	def guess(self):
+		'''
+		Takes a guess, and returns if it's successful
+		'''
+		guess = input("Guess a letter: ")
+		guessed_letters = self.guess_letter(guess)
+		
+		if len(guessed_letters) > 0:
+			self.update_state(guess, guessed_letters)
+			return 1
+		
+		return 0
+
+	def start_game(self):
+		print("The word is " + str(len(self.word)) + " letters long")
+		self.print_state()
+		
+	def check_win(self):
+		'''
+		Check if someone has won the game
+		'''
+		for elem in self.state:
+			if elem == '*':
+				return 0
+		return 1
 	
 	def print_state(self):
 		'''
@@ -124,6 +89,27 @@ class hangman:
 				to_print = to_print + elem + " "
 		
 		print(to_print)
+
+
+
+
+def play():
+	'''
+	Plays hangman
+	'''
 	
-	def get_state(self):
-		return self.state
+	new_game = hangman()
+	max_guesses = 5
+	count = 0
+	new_game.start_game()
+	while count < max_guesses:
+		if new_game.guess() == 0:
+			count += 1
+		new_game.print_state()
+		if new_game.check_win() == 1:
+			print("You won!")
+			return
+	print("You lose!")
+
+if __name__ == '__main__':
+	play()
