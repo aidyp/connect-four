@@ -41,10 +41,6 @@ def print_state(state):
 			to_print = to_print + elem + " "
 	
 	print(to_print)
-
-def initialise_state(word):
-	state = ['*'] * len(word)
-	return state
 	
 
 def update_state(state, letter, indices):
@@ -104,3 +100,30 @@ def play():
 	print("You lose!")
 
 play()
+
+
+class hangman:
+	
+	def __init__(self):
+		self.word = pick_word()
+		self.state = initialise_state()	
+	
+	def initialise_state(self):
+		self.state = ['*'] * len(word)
+	
+	def print_state(self):
+		'''
+		Prints the current state of hangman
+		'''
+		to_print = ""
+		
+		for elem in self.state:
+			if elem == '*':
+				to_print = to_print + "_ "
+			else:
+				to_print = to_print + elem + " "
+		
+		print(to_print)
+	
+	def get_state(self):
+		return self.state
