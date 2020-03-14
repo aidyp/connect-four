@@ -92,7 +92,7 @@ class connect_four_board:
         Places a piece on the board in the selected column for the current player
         Returns -1 for illegal moves, returns 0 otherwise
         '''
-        
+
         col = int(col)
         if self.board_state[0][col] != '*':
             # Illegal move
